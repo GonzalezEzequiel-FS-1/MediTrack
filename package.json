@@ -1,0 +1,28 @@
+{
+  "name": "meditrack",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "patient-management",
+    "healthcare",
+    "dashboard",
+    "scheduling",
+    "fullstack"
+  ],
+  "author": "Ezequiel Gonzalez",
+  "license": "GPL-3.0",
+  "description": "Patient Management Dashboard for occupational health teams to streamline scheduling, compliance, and reporting.",
+  "dependencies": {},
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GonzalezEzequiel-FS-1/MediTrack.git"
+  },
+  "bugs": {
+    "url": "https://github.com/GonzalezEzequiel-FS-1/MediTrack/issues"
+  },
+  "homepage": "https://github.com/GonzalezEzequiel-FS-1/MediTrack#readme"
+}
