@@ -1,53 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Patient Management Dashboard - README</title>
-</head>
-<body>
-  <h1>Patient Management Dashboard</h1>
+ <h1>Patient Management Dashboard</h1>
   
+  <p>
+    <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" target="_blank" rel="noopener noreferrer">
+      <img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="GPLv3 License Badge" />
+    </a>
+  </p>
+
   <h2>Project Description</h2>
   <p>
-    This project is a web-based Patient Management Dashboard designed for healthcare settings to streamline patient scheduling, appointment tracking, and communication between medical teams across multiple campuses. 
-    It integrates calendar syncing, notifications, and workflow automation to improve operational efficiency.
+    This project is a Patient Management Dashboard designed to help medical teams coordinate patient scheduling, DOT testing, and communication across multiple campuses. It integrates calendar functionality and automated workflow tools to improve operational efficiency and ensure timely patient care.
   </p>
-  
+
   <h2>Features</h2>
   <ul>
-    <li>Patient CRUD operations with detailed medical records.</li>
-    <li>Appointment scheduling with calendar integration (Google Calendar).</li>
-    <li>Real-time dashboard to improve communication between medical surveillance teams.</li>
-    <li>Automated email and in-app notifications for upcoming appointments.</li>
-    <li>Workflow automation using Smartsheet and Power Automate.</li>
-    <li>Role-based access control for user permissions.</li>
+    <li>Patient scheduling and calendar integration</li>
+    <li>Real-time communication dashboard for medical staff</li>
+    <li>Automated workflow management using Node.js, Smartsheet, and Power Automate</li>
+    <li>Responsive design for desktop and mobile devices</li>
   </ul>
-  
-  <h2>Technology Stack</h2>
+
+  <h2>Tech Stack</h2>
   <ul>
-    <li>Backend: Node.js, Express.js, MongoDB</li>
-    <li>Frontend: React, TypeScript, Tailwind CSS</li>
-    <li>APIs: Google Calendar API, Smartsheet API</li>
-    <li>Automation: Power Automate, Email notifications (SendGrid/Nodemailer)</li>
+    <li>Frontend: React, Tailwind CSS</li>
+    <li>Backend: Node.js, Express.js</li>
+    <li>Database: MongoDB</li>
+    <li>Automation: Smartsheet, Power Automate integration</li>
   </ul>
-  
-  <h2>Getting Started</h2>
-  <p>Instructions on how to set up the project locally will go here.</p>
-  
-  <h2>Project Roadmap</h2>
+
+  <h2>Installation</h2>
   <ol>
-    <li>Backend MVP: Data models and REST API for patients and appointments.</li>
-    <li>Frontend MVP: React UI for patient and appointment management with authentication.</li>
-    <li>Calendar Integration: Sync appointments with Google Calendar.</li>
-    <li>Automation: Notifications and workflow enhancements.</li>
-    <li>Testing & Deployment: Tests, CI/CD pipeline, and documentation.</li>
+    <li>Clone the repository: <code>git clone https://github.com/yourusername/patient-management-dashboard.git</code></li>
+    <li>Navigate to the project directory: <code>cd patient-management-dashboard</code></li>
+    <li>Install dependencies: <code>npm install</code></li>
+    <li>Start the development server: <code>npm start</code></li>
   </ol>
-  
+
+  <h2>Usage</h2>
+  <p>
+    After running the development server, open your browser and navigate to <code>http://localhost:3000</code> to access the dashboard. Use the interface to manage patient appointments, communicate with your team, and track workflow status.
+  </p>
+
   <h2>Contributing</h2>
-  <p>Guidelines for contributing to the project will be added here.</p>
-  
+  <p>
+    Contributions are welcome! Please open an issue or submit a pull request for any bugs, features, or improvements.
+  </p>
+
   <h2>License</h2>
-  <p>Specify your license here.</p>
-</body>
-</html>
+  <p>
+    This project is licensed under the 
+    <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" target="_blank" rel="noopener noreferrer">
+      GNU General Public License v3.0
+    </a>.
+  </p>
+  <p>
+    You can view the full license text 
+    <a href="https://www.gnu.org/licenses/gpl-3.0.txt" target="_blank" rel="noopener noreferrer">here</a>.
+  </p>
