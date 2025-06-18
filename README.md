@@ -29,7 +29,7 @@
 
   <h2>Installation</h2>
   <ol>
-    <li>Clone the repository: <code>git clone https://github.com/yourusername/patient-management-dashboard.git</code></li>
+    <li>Clone the repository: <code>git clone https://github.com/GonzalezEzequiel-FS-1/MediTrack.git</code></li>
     <li>Navigate to the project directory: <code>cd patient-management-dashboard</code></li>
     <li>Install dependencies: <code>npm install</code></li>
     <li>Start the development server: <code>npm start</code></li>
