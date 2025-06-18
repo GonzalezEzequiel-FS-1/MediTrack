@@ -25,11 +25,13 @@
   },
   "homepage": "https://github.com/GonzalezEzequiel-FS-1/MediTrack#readme",
   "dependencies": {
+    "compression": "^1.8.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "mongoose": "^8.16.0",
     "morgan": "^1.10.0",
-    "nodemon": "^3.1.10",
     "winston": "^3.17.0",
     "winston-daily-rotate-file": "^5.0.0"
   }
