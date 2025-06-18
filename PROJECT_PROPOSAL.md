@@ -1,37 +1,56 @@
-# Project Proposal: MediTrack
+  <h1>Project Proposal: MediTrack</h1>
 
-## 🎯 Goal
+  <section>
+    <h2><span class="emoji">🎯</span>Goal</h2>
+    <p>
+      Build a full-stack Patient Management Dashboard tailored for occupational health teams to coordinate appointments, manage compliance workflows, and significantly reduce manual administrative overhead.
+    </p>
+  </section>
 
-To build a full-stack Patient Management Dashboard for occupational health teams to coordinate appointments, manage compliance tasks, and reduce manual administrative overhead.
+  <section>
+    <h2><span class="emoji">💡</span>Motivation</h2>
+    <p>
+      From firsthand experience working in medical surveillance, managing high volumes of patient testing across multiple locations is cumbersome. Existing solutions often rely on spreadsheets and disconnected systems. <strong>MediTrack</strong> consolidates these tasks into a modern, web-based dashboard with real-time syncing, intuitive scheduling, and comprehensive reporting.
+    </p>
+  </section>
 
-## 💡 Motivation
+  <section>
+    <h2><span class="emoji">🧱</span>Tech Stack</h2>
+    <ul>
+      <li><strong>Frontend:</strong> React, Tailwind CSS, FullCalendar.js for interactive scheduling</li>
+      <li><strong>Backend:</strong> Node.js, Express.js, MongoDB, JWT for authentication and security</li>
+      <li><strong>Deployment:</strong> Vercel for frontend, Render for API hosting</li>
+      <li><strong>Additional Features:</strong> SharePoint/CSV-compatible export, PDF summary generation, basic analytics dashboard</li>
+    </ul>
+  </section>
 
-While working in medical surveillance, I experienced first-hand the challenges of managing large volumes of patient testing across different locations. Most teams relied on spreadsheets and disconnected systems. MediTrack brings it all together into a modern web-based dashboard with real-time syncing, scheduling, and reporting.
+  <section>
+    <h2><span class="emoji">🗓️</span>Core Features</h2>
+    <ul>
+      <li>Comprehensive patient record management</li>
+      <li>Interactive calendar integration with drag-and-drop rescheduling</li>
+      <li>Role-based access control (Admin, Technician, View-only)</li>
+      <li><em>Optional:</em> Automated email and SMS reminders for appointments</li>
+      <li><em>Optional:</em> Exportable reports for compliance and audits</li>
+    </ul>
+  </section>
 
-## 🧱 Tech Stack
+  <section>
+    <h2><span class="emoji">✅</span>Expected Outcomes</h2>
+    <ul>
+      <li>Practical UX problem-solving applied to a healthcare domain</li>
+      <li>Robust full-stack CRUD operations with real-time calendar state management</li>
+      <li>Integration of domain-specific knowledge for occupational health workflows</li>
+      <li>Professional code structure, version control, and cloud deployment experience</li>
+    </ul>
+  </section>
 
-- React + Tailwind CSS + FullCalendar.js
-- Node.js + Express + MongoDB + JWT
-- Deployment: Vercel (Frontend) + Render (API)
-- Bonus: SharePoint/CSV-compatible output, PDF summaries, analytics
+  <section>
+    <h2><span class="emoji">🔗</span>Repository</h2>
+    <p>
+      <a href="https://github.com/YOUR_USERNAME/meditrack-dashboard" target="_blank" rel="noopener noreferrer">
+        GitHub - MediTrack Dashboard
+      </a>
+    </p>
+  </section>
 
-## 🗓️ Core Features
-
-- Patient record management
-- Calendar integration with drag-and-drop rescheduling
-- Role-based access control (admin, tech, view-only)
-- (Optional) Email/SMS reminders
-- (Optional) Report exports
-
-## ✅ Outcomes
-
-This project will demonstrate:
-- Real-world UX problem solving
-- Full-stack CRUD implementation
-- Complex state & calendar management
-- Domain knowledge integration (healthcare systems)
-- Professional code organization & deployment
-
-## 🔗 Repo
-
-[GitHub - MediTrack Dashboard](https://github.com/YOUR_USERNAME/meditrack-dashboard)
