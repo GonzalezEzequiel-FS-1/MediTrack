@@ -1,0 +1,27 @@
+{
+  "name": "meditrack-server",
+  "version": "0.0.1",
+  "description": "Patient Management Dashboard for occupational health teams to streamline scheduling, compliance, and reporting.",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GonzalezEzequiel-FS-1/MediTrack.git"
+  },
+  "keywords": [
+    "patient-management",
+    "healthcare",
+    "dashboard",
+    "scheduling",
+    "fullstack"
+  ],
+  "author": "Ezequiel Gonzalez",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/GonzalezEzequiel-FS-1/MediTrack/issues"
+  },
+  "homepage": "https://github.com/GonzalezEzequiel-FS-1/MediTrack#readme"
+}
