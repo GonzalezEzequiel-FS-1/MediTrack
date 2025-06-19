@@ -24,7 +24,6 @@
     <li><strong>Frontend:</strong><ul><li>React</li><li>Tailwind CSS</li><li>Framer-Motion</li></ul></li>
     <li><strong>Backend:</strong><ul><li>Node.js</li><li>Express.js</li></ul>
     <li><strong>Database:</strong><ul><li>MongoDB</li></ul>
-    <li>Automation: Smartsheet, Power Automate integration</li>
   </ul>
 
   <h2>Installation</h2>
