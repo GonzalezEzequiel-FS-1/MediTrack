@@ -1,4 +1,4 @@
- <h1>Patient Management Dashboard</h1>
+<h1>Patient Management Dashboard</h1>
   
   <p>
     <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" target="_blank" rel="noopener noreferrer">
@@ -21,7 +21,7 @@
 
   <h2>Tech Stack</h2>
   <ul>
-    <li>Frontend: React, Tailwind CSS</li>
+    <li>Frontend: React, Tailwind CSS, Framer-Motion</li>
     <li>Backend: Node.js, Express.js</li>
     <li>Database: MongoDB</li>
     <li>Automation: Smartsheet, Power Automate integration</li>
