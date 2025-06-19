@@ -22,7 +22,7 @@
   <h2>Tech Stack</h2>
   <ul>
     <li>Frontend:<ul><li>React</li><li>Tailwind CSS</li><li>Framer-Motion</li></ul></li>
-    <li>Backend: Node.js, Express.js</li>
+    <li><strong>Backend:</strong><ul><li>Node.js</li><li>Express.js</li></ul>
     <li>Database: MongoDB</li>
     <li>Automation: Smartsheet, Power Automate integration</li>
   </ul>
