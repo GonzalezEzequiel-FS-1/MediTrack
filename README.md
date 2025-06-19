@@ -34,7 +34,7 @@
     <li>Start the development server: <code>npm start</code></li>
   </ol>
 
-  <h2>Usage</h2>
+  <h2>Usage<em>(Wile in Development)</em></h2>
   <p>
     After running the development server, open your browser and navigate to <code>http://localhost:3000</code> to access the dashboard. Use the interface to manage patient appointments, communicate with your team, and track workflow status.
   </p>
