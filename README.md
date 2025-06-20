@@ -1,4 +1,4 @@
- <h1>Patient Management Dashboard</h1>
+<h1>Patient Management Dashboard</h1>
   
   <p>
     <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" target="_blank" rel="noopener noreferrer">
@@ -21,10 +21,9 @@
 
   <h2>Tech Stack</h2>
   <ul>
-    <li>Frontend: React, Tailwind CSS</li>
-    <li>Backend: Node.js, Express.js</li>
-    <li>Database: MongoDB</li>
-    <li>Automation: Smartsheet, Power Automate integration</li>
+    <li><strong>Frontend:</strong><ul><li>React</li><li>Tailwind CSS</li><li>Framer-Motion</li></ul></li>
+    <li><strong>Backend:</strong><ul><li>Node.js</li><li>Express.js</li></ul>
+    <li><strong>Database:</strong><ul><li>MongoDB</li></ul>
   </ul>
 
   <h2>Installation</h2>
@@ -35,7 +34,7 @@
     <li>Start the development server: <code>npm start</code></li>
   </ol>
 
-  <h2>Usage</h2>
+  <h2>Usage <em>(Wile in Development)</em></h2>
   <p>
     After running the development server, open your browser and navigate to <code>http://localhost:3000</code> to access the dashboard. Use the interface to manage patient appointments, communicate with your team, and track workflow status.
   </p>
