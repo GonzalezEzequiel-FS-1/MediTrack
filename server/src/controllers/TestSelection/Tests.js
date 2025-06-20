@@ -1,7 +1,6 @@
 const Patient = require("../../models/Patient");
 const categories = require("../misc/categories.json");
-const test = require("../misc/tests.json");
-
+const test = require("../misc/test.json");
 const testSelection = async (category) => {
   let testToPerform = [];
   if (!category) {
@@ -116,9 +115,9 @@ const testSelection = async (category) => {
       ];
       break;
   }
+  console.log(testToPerform);
   return testToPerform;
 };
-
 module.exports = {
   testSelection,
 };
