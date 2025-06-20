@@ -1,0 +1,18 @@
+{
+  "Irrigation": "Ear Irrigation",
+  "Audiogram": "Audiogram",
+  "CMP": "Comprehensive Metabolic Panel",
+  "CBC": "CBC w/ differential and platelets",
+  "XRay": "Chest X-Ray",
+  "ECG": "ECG",
+  "PFT": "Pulmonary Function Test",
+  "Titer": "Hepatitis B Titer",
+  "LFT": "Liver Function Blood Test",
+  "RespQ": "Respirator Questionnaire",
+  "RFT": "Respirator Fit Test",
+  "STSEv": "STS Evaluation",
+  "Titmus": "Titmus Vision Test",
+  "Ishihara": "Ishihara Test",
+  "UA": "Urinalysis",
+  "Vision": "Vision Test"
+}
