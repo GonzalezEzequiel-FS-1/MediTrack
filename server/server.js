@@ -13,9 +13,14 @@ const logger = require('./logs/logger');
 const routes = require('./src/routes')
 
 const compression = require('compression');
+const { connectDB } = require('./DB/database');
+
+// Load DB
+connectDB();
 
 // Enviroment Variable for the Server's Port
 const PORT = process.env.PORT || 3000;
+
 
 // Helmet Config
 app.use(helmet())
