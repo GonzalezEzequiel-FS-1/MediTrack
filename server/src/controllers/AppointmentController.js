@@ -1,6 +1,7 @@
 const Patient = require("../models/Patient");
 const Visit = require("../models/Visit");
 const { testSelection } = require("./TestSelection/Tests");
+const mongoose = require("mongoose");
 
 // Schedule a New Visit
 const scheduleVisit = async (req, res) => {
@@ -72,66 +73,157 @@ const scheduleVisit = async (req, res) => {
     });
   }
 };
-
-// Delete Patient
-const deletePatient = async (req, res) => {
-  const searchParams = req.query;
-  if(!searchParams){
+// Get a Spefic visit
+const getVisit = async (req, res) => {
+  const id = req.query.id;
+  if (!id) {
     return res.status(400).json({
-      status:false,
-      message:"No Search Criteria Provided"
-    })
-  };
-  const patient = await Patient.find(searchParams);
-  const id = patient[0]._id;
-  const appointments = await Visit.find({ patient: id });
-  const deletePatientRecord= async ()=>{
-    
+      success: false,
+      message: "No appointment ID provided",
+    });
   }
-  await Patient.deleteOne(searchParams);
-  await 
-  return res.status(200).json({
-    success: true,
-    id,
-    appointments,
-  });
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid _id format",
+    });
+  }
+  const visit = await Visit.findById(id);
+  if (!visit) {
+    return res.status(401).json({
+      success: false,
+      message: `Appointment with ID ${id} not found in database`,
+    });
+  }
+  try {
+    return res.status(200).json({
+      success: true,
+      visit,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      error: err.message,
+    });
+  }
 };
 // Get Visits
-const getVisit = async (req, res) => {
-  const { page = 1, limit = 10, ...searchParams } = req.query;
+const getVisits = async (req, res) => {
+  const { page, limit, ...query } = req.query;
 
   try {
-    const patients = await Patient.find(searchParams)
-      .populate("visits")
-      .limit(parseInt(limit))
-      .skip((parseInt(page) - 1) * parseInt(limit))
-      .sort({ createdAt: -1 });
-
-    if (patients.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "No patients found with given criteria",
-      });
+    // 1. Find the patient
+    const patient = await Patient.findOne(query);
+    if (!patient) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Patient not found" });
     }
+    const totalCount = await Visit.countDocuments({ patient: patient._id });
+    let visitsQuery = Visit.find({ patient: patient._id }).sort({
+      createdAt: -1,
+    });
+
+    // 2. Apply pagination only if page and limit are present
+    if (page && limit) {
+      const pageNumber = parseInt(page);
+      const limitNumber = parseInt(limit);
+
+      visitsQuery = visitsQuery
+        .skip((pageNumber - 1) * limitNumber)
+        .limit(limitNumber);
+    }
+
+    const visits = await visitsQuery;
 
     return res.status(200).json({
       success: true,
-      page: parseInt(page),
-      limit: parseInt(limit),
-      results: patients.length,
-      patients,
+      results: visits.length,
+      totalCount,
+      patient: {
+        _id: patient._id,
+        fullName: patient.fullName,
+        TMID: patient.TMID,
+      },
+      results: visits.length,
+      paginated: !!(page && limit),
+      visits,
     });
   } catch (err) {
-    return res.status(500).json({
+    return res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+// Edit Specific Visit
+const editVisit = async (req, res) => {
+  const id = req.query.id;
+  const dataToEdit = req.body;
+  if (!id || !dataToEdit) {
+    return res.status(400).json({
+      success: false,
+      message: "No appointment ID or Data provided",
+    });
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid _id format",
+    });
+  }
+
+  const editedVisit = await Visit.findOneAndUpdate(
+    { _id: id },
+    { $set: dataToEdit },
+    { new: true, runValidators: true }
+  );
+  if (!editedVisit) {
+    return res.status(401).json({
+      success: false,
+      message: `Visit with ID ${id} not found.`,
+    });
+  }
+  try {
+    return res.status(200).json({
+      id,
+      editedVisit,
+      dataToEdit,
+    });
+  } catch (err) {
+    res.status(500).json({
       success: false,
       error: err.message,
     });
   }
 };
 
-// Edit Specific Visit
-const editVisit = async (req, res) => {
+// Edit Patient
+const editPatient = async (req, res) => {
+  const { ...patientToEdit } = req.query;
+  const dataToEdit = req.body;
+  if (!patientToEdit || Object.keys(dataToEdit).length === 0) {
+    return res.status(400).json({
+      success: false,
+      message: `No data provided.`,
+    });
+  }
   try {
+    const editedPatient = await Patient.findOneAndUpdate(
+      { ...patientToEdit },
+      { $set: dataToEdit },
+      { new: true, runValidators: true }
+    );
+    if (!editedPatient) {
+      return res.status(404).json({
+        success: false,
+        message: "Patient not found.",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      editedPatient,
+    });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -141,7 +233,7 @@ const editVisit = async (req, res) => {
 };
 
 // Delete all Visits
-const deleteVisits = async (req, res) => {
+const deleteAllVisits = async (req, res) => {
   try {
     await Visit.deleteMany({});
     return res.status(200).json({
@@ -157,7 +249,7 @@ const deleteVisits = async (req, res) => {
 };
 
 // Delete all Patients
-const deletePatients = async (req, res) => {
+const deleteAllPatients = async (req, res) => {
   try {
     await Patient.deleteMany({});
     return res.status(200).json({
@@ -174,7 +266,36 @@ const deletePatients = async (req, res) => {
 
 // Delete specific Visit
 const deleteVisit = async (req, res) => {
+  const visitToDelete = req.query;
+  console.log(visitToDelete);
+  if (!visitToDelete.id) {
+    return res.status(400).json({
+      success: false,
+      message: "No appointment ID provided for deletion",
+    });
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(visitToDelete.id)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid _id format",
+    });
+  }
+
   try {
+    const result = await Visit.deleteOne({ _id: visitToDelete.id });
+
+    if (result.deletedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No visit found with that ID",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: `Visit with ID ${visitToDelete.id} deleted`,
+    });
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -183,12 +304,54 @@ const deleteVisit = async (req, res) => {
   }
 };
 
+// Delete Specific Patient
+const deletePatient = async (req, res) => {
+  const searchParams = req.query;
+
+  if (!searchParams || Object.keys(searchParams).length === 0) {
+    return res.status(400).json({
+      success: false,
+      message: "No Search Criteria Provided",
+    });
+  }
+
+  try {
+    const patient = await Patient.findOne(searchParams);
+    if (!patient) {
+      return res.status(404).json({
+        success: false,
+        message: "Patient not found",
+      });
+    }
+
+    const appointments = await Visit.find({ patient: patient._id });
+
+    // Delete Patient & Visits
+    await Patient.deleteOne({ _id: patient._id });
+    await Visit.deleteMany({ patient: patient._id });
+
+    return res.status(200).json({
+      success: true,
+      deletedPatientId: patient._id,
+      deletedVisitsCount: appointments.length,
+      appointments,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      error: err.message,
+    });
+  }
+};
+
 module.exports = {
+  editPatient,
   scheduleVisit,
   getVisit,
+  getVisits,
   editVisit,
-  deleteVisits,
+  deleteAllVisits,
   deleteVisit,
-  deletePatients,
+  deleteAllPatients,
   deletePatient,
 };
