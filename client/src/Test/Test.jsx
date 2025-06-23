@@ -1,9 +1,10 @@
 import React from "react";
+import Button from "@mui/material/Button";
 
 export default function Test() {
   return (
     <div>
-      <h1>Testing</h1>
+      <Button variant="contained">Hello world</Button>
     </div>
   );
 }
