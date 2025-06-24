@@ -73,6 +73,7 @@ const scheduleVisit = async (req, res) => {
     });
   }
 };
+
 // Get a Spefic visit
 const getVisit = async (req, res) => {
   const id = req.query.id;
@@ -232,6 +233,49 @@ const editPatient = async (req, res) => {
   }
 };
 
+// Get Patient
+const getPatient = async (req, res) => {
+  const { ...query } = req.query;
+  if (!{} || Object.keys(query).length === 0) {
+    return res.status(400).json({
+      success: false,
+      message: "No Team Member ID Data provided.",
+    });
+  }
+  const patient = await Patient.findOne({ ...query });
+
+  if (!patient) {
+    return res.status(400).json({
+      success: false,
+      message: "Patient Not found in DB",
+    });
+  }
+  const patientID = patient._id;
+  const visit = await Visit.find({ patient: patientID });
+  if (!visit) {
+    return res.status(400).json({
+      success: false,
+      message: "No visita avalilable for the selected patient.",
+    });
+  }
+  const patientAndData = {
+    patient,
+    visit,
+  };
+
+  try {
+    return res.status(200).json({
+      success: true,
+      patientAndData,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error,
+    });
+  }
+};
+
 // Delete all Visits
 const deleteAllVisits = async (req, res) => {
   try {
@@ -354,4 +398,5 @@ module.exports = {
   deleteVisit,
   deleteAllPatients,
   deletePatient,
+  getPatient,
 };

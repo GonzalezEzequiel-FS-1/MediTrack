@@ -11,7 +11,9 @@ const {
   deleteVisit,
   deletePatient,
   deleteAllPatients,
+  getPatient,
 } = require("../controllers/AppointmentController");
+const { bulkUpload } = require("../controllers/bulkUpload");
 
 router.get("/test-log", (req, res) => {
   logger.info("Test route hit");
@@ -20,9 +22,18 @@ router.get("/test-log", (req, res) => {
   res.status(200).json({ success: true, message: "Logs tested" });
 });
 
-router.route("/visit").get(getVisit).post(scheduleVisit).delete(deleteVisit).patch(editVisit);
+router
+  .route("/visit")
+  .get(getVisit)
+  .post(scheduleVisit)
+  .delete(deleteVisit)
+  .patch(editVisit);
 router.route("/visit/all").get(getVisits).delete(deleteAllVisits);
-router.route("/patient").patch(editPatient).delete(deletePatient);
-router.route("/patient/all").delete(deleteAllPatients);
+router
+  .route("/patient")
+  .patch(editPatient)
+  .delete(deletePatient)
+  .get(getPatient);
+router.route("/patient/all").delete(deleteAllPatients).post(bulkUpload);
 
 module.exports = router;
