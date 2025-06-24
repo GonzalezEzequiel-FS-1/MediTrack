@@ -5,113 +5,103 @@ import DefaultButton from "./Button";
 import TextField from "./TextField";
 
 export default function PatientData() {
-  const [patient, setPatient] = useState("");
+  const [patientID, setPatientID] = useState("");
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [TMID, setTMID] = useState("");
-  const [jobTitle, setJobTitle] = useState("");
-  const [service, setService] = useState("");
-  const [status, setStatus] = useState("");
-  const [typeOfPhysical, setTypeOfPhysical] = useState("");
-  const [testToPerform, setTestToPerform] = useState([]); // stays as array
+  const [patient, setPatient] = useState(null);
+  const [visits, setVisits] = useState([]);
 
-  const handleGetPatient = async (patient) => {
-    if (!patient) {
+  const handleGetPatient = async () => {
+    if (!patientID) {
       setError(true);
-      setErrorMessage("No Team Member Data Available");
+      setErrorMessage("Please enter a Team Member ID.");
       return;
     }
 
     try {
-      const link = `http://localhost:3000/api/patient?TMID=${patient}`;
-      const request = await axios.get(link, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!request.data || !request.data.message) {
-        setError(true);
-        setErrorMessage("Team Member not found in the database");
-        return;
-      }
-
-      const tm = request.data.message.patient;
-      const visitArray = request.data.message.visit;
-      const latestVisit =
-        Array.isArray(visitArray) && visitArray.length > 0
-          ? visitArray[visitArray.length - 1]
-          : null;
-
-      if (!latestVisit) {
-        setError(true);
-        setErrorMessage("No visits found for this patient");
-        return;
-      }
-
-      setFirstName(tm.firstName);
-      setLastName(tm.lastName);
-      setTMID(tm.TMID);
-      setJobTitle(tm.jobTitle);
-      setService(latestVisit.service);
-      setStatus(latestVisit.status);
-      setTypeOfPhysical(latestVisit.typeOfPhysical);
-      setTestToPerform(
-        Array.isArray(latestVisit.testToPerform)
-          ? latestVisit.testToPerform
-          : []
+      const response = await axios.get(
+        `http://localhost:3000/api/patient?TMID=${patientID}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
 
+      const data = response.data.patientAndData;
+      const patient = data.patient;
+      const visits = data.visit;
+
+      console.log(data.patient);
+
+      if (!patient || !Array.isArray(visits)) {
+        throw new Error("Invalid or incomplete response.");
+      }
+
+      setPatient(patient);
+      setVisits(visits);
       setError(false);
     } catch (err) {
       console.error(err);
       setError(true);
-      setErrorMessage("An error occurred while fetching the patient.");
+      setErrorMessage("Could not fetch patient data.");
+      setPatient(null);
+      setVisits([]);
     }
   };
 
   useEffect(() => {
-    if (!error) {
-      setErrorMessage("");
-    }
+    if (!error) setErrorMessage("");
   }, [error]);
 
   return (
     <Container>
       <Form>
         {error && <ErrorMessage>{errorMessage}</ErrorMessage>}
+
         <TextField
-          value={patient}
-          placeholder={"Team Member ID"}
-          onChange={(e) => setPatient(e.target.value)}
+          value={patientID}
+          placeholder="Team Member ID"
+          onChange={(e) => setPatientID(e.target.value)}
         />
-        <DefaultButton
-          text="Submit"
-          onClick={() => handleGetPatient(patient)}
-        />
+        <DefaultButton text="Submit" onClick={handleGetPatient} />
       </Form>
 
-      <DataContainer>
-        <Text>{firstName}</Text>
-        <Text>{lastName}</Text>
-        <Text>{TMID}</Text>
-        <Text>{jobTitle}</Text>
-        <Text>{service}</Text>
-        <Text>{status}</Text>
-        <Text>{typeOfPhysical}</Text>
+      {patient && (
+        <DataContainer>
+          <Heading>Patient Info</Heading>
+          <Text>{patient.fullName}</Text>
+          <Text>TMID: {patient.TMID}</Text>
 
-        {testToPerform.length > 0 ? (
-          testToPerform.map((test, index) => <Text key={index}>{test}</Text>)
-        ) : (
-          <Text>No tests assigned</Text>
-        )}
-      </DataContainer>
+          <Heading>Visit History ({visits.length})</Heading>
+          {visits.map((visit, index) => (
+            <VisitCard key={visit._id}>
+              <Text>
+                <strong>Visit #{index + 1}</strong>
+              </Text>
+              <Text>Type: {visit.typeOfPhysical}</Text>
+              <Text>Service: {visit.service}</Text>
+              <Text>Status: {visit.status}</Text>
+
+              <Text>Tests:</Text>
+              {visit.testToPerform?.map((test, i) => (
+                <Text key={i}>- {test}</Text>
+              ))}
+
+              <Text>Appointments:</Text>
+              {visit.appointments?.map((appt, i) => (
+                <Text key={i}>
+                  📅 {new Date(appt.dateTime).toLocaleString()} @{" "}
+                  {appt.location} — {appt.notes}
+                </Text>
+              ))}
+            </VisitCard>
+          ))}
+        </DataContainer>
+      )}
     </Container>
   );
 }
-
 const Container = styled.div`
   display: flex;
   width: 100%;
@@ -119,13 +109,6 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-`;
-
-const DataContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  background-color: red;
-  width: 100%;
 `;
 
 const Form = styled.form`
@@ -153,11 +136,32 @@ const ErrorMessage = styled.p`
   text-align: center;
 `;
 
+const DataContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 1rem;
+`;
+
 const Text = styled.p`
   color: white;
   font-weight: 600;
-  letter-spacing: 0.15rem;
-  font-size: 0.75rem;
-  text-align: center;
-  text-transform: capitalize;
+  letter-spacing: 0.05rem;
+  font-size: 0.9rem;
+  margin: 0.25rem 0;
+`;
+
+const Heading = styled.h3`
+  color: #00ffcc;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+`;
+
+const VisitCard = styled.div`
+  background-color: #333;
+  border-radius: 10px;
+  padding: 1rem;
+  margin: 1rem 0;
+  box-shadow: 0 0 5px #00000080;
 `;
