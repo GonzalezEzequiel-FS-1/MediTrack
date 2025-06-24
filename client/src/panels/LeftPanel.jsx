@@ -2,14 +2,16 @@ import React from "react";
 import styled from "styled-components";
 import { CgHomeAlt } from "react-icons/cg";
 import { MdOutlineSettings } from "react-icons/md";
-import { FaCalendarAlt } from "react-icons/fa";
+import { FaCalendarAlt, FaBell, FaHome } from "react-icons/fa";
+import { FaGears } from "react-icons/fa6";
 
 export default function LeftPanel({ height, background }) {
   return (
     <Container height={height} background={background}>
-      <StyledIcon as={CgHomeAlt} />
-      <StyledIcon as={MdOutlineSettings} />
+      <StyledIcon as={FaHome} />
+      <StyledIcon as={FaGears} />
       <StyledIcon as={FaCalendarAlt} />
+      <StyledIcon as={FaBell} />
     </Container>
   );
 }
@@ -33,9 +35,13 @@ const StyledIcon = styled.div`
   font-size: 3rem;
   color: #ababab;
   cursor: pointer;
-  transition: all 0.15s ease-in-out;
+  filter: drop-shadow(2px 2px 5px #000000);
+  transition: all 0.05s ease-in-out;
   &:hover {
     color: #737373;
+  }
+  &:active {
+    transform: scale(0.95);
   }
   display: flex;
   align-items: center;
