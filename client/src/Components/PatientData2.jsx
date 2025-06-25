@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useEffect, useState } from "react";
 import DefaultButton from "./Button";
 import TextField from "./TextField";
+import { FaChevronCircleLeft, FaChevronCircleRight } from "react-icons/fa";
 
 export default function PatientData() {
   const [patientID, setPatientID] = useState("");
@@ -10,7 +11,22 @@ export default function PatientData() {
   const [errorMessage, setErrorMessage] = useState("");
   const [patient, setPatient] = useState(null);
   const [visits, setVisits] = useState([]);
-  const [cardNumber, setCardNumber] = useState(0)
+  const [cardNumber, setCardNumber] = useState(0);
+
+  const formatPatient = (data) => ({
+    "First Name": data.firstName,
+    "Last Name": data.lastName,
+    TMID: data.TMID,
+    "Job Title": data.jobTitle,
+  });
+
+  const formatVisit = (visit) => ({
+    "Type of Physical": visit.typeOfPhysical,
+    Service: visit.service,
+    "Scheduled Tests": visit.testToPerform?.join(", ") ?? "N/A",
+    Status: visit.status,
+    "Date and Time": visit.appointments?.[0]?.dateTime ?? "N/A",
+  });
 
   const handleGetPatient = async () => {
     if (!patientID) {
@@ -29,18 +45,15 @@ export default function PatientData() {
         }
       );
 
-      const data = response.data.patientAndData;
-      const patient = data.patient;
-      const visits = data.visit;
+      const { patient: rawPatient, visit } = response.data.patientAndData;
 
-      console.log(`Visits >>> ${visits}`);
-
-      if (!patient || !Array.isArray(visits)) {
+      if (!rawPatient || !Array.isArray(visit)) {
         throw new Error("Invalid or incomplete response.");
       }
 
-      setPatient(patient);
-      setVisits(visits);
+      setPatient(formatPatient(rawPatient));
+      setVisits(visit);
+      setCardNumber(0);
       setError(false);
     } catch (err) {
       console.error(err);
@@ -49,6 +62,14 @@ export default function PatientData() {
       setPatient(null);
       setVisits([]);
     }
+  };
+
+  const nextVisit = () => {
+    setCardNumber((prev) => Math.min(prev + 1, visits.length - 1));
+  };
+
+  const prevVisit = () => {
+    setCardNumber((prev) => Math.max(prev - 1, 0));
   };
 
   useEffect(() => {
@@ -67,42 +88,38 @@ export default function PatientData() {
         />
         <DefaultButton text="Submit" onClick={handleGetPatient} />
       </Form>
-
-      {patient && (
-        <DataContainer>
-          <Heading>Patient Info</Heading>
-          <Text>{patient.fullName}</Text>
-          <Text>TMID: {patient.TMID}</Text>
-
-          <Heading>Visit History ({visits.length})</Heading>
-          {visits.map((visit, index) => (
-            <VisitCard key={visit._id}>
-              <Text>
-                <strong>Visit #{index + 1}</strong>
-              </Text>
-              <Text>Type: {visit.typeOfPhysical}</Text>
-              <Text>Service: {visit.service}</Text>
-              <Text>Status: {visit.status}</Text>
-
-              <Text>Tests:</Text>
-              {visit.testToPerform?.map((test, i) => (
-                <Text key={i}>- {test}</Text>
-              ))}
-
-              <Text>Appointments:</Text>
-              {visit.appointments?.map((appt, i) => (
-                <Text key={i}>
-                  📅 {new Date(appt.dateTime).toLocaleString()} @{" "}
-                  {appt.location} — {appt.notes}
-                </Text>
-              ))}
-            </VisitCard>
+      <DataContainer>
+        {patient &&
+          Object.entries(patient).map(([key, value]) => (
+            <Text key={key}>
+              <strong>{key}: </strong>
+              {String(value)}
+            </Text>
           ))}
-        </DataContainer>
+      </DataContainer>
+      {visits.length > 0 && (
+        <VisitCard>
+          {Object.entries(formatVisit(visits[cardNumber])).map(
+            ([key, value]) => (
+              <Text key={key}>
+                <strong>{key}: </strong>
+                {String(value)}
+              </Text>
+            )
+          )}
+          <NavContainer>
+            <LeftArrow onClick={prevVisit} disabled={cardNumber === 0} />
+            <RightArrow
+              onClick={nextVisit}
+              disabled={cardNumber === visits.length - 1}
+            />
+          </NavContainer>
+        </VisitCard>
       )}
     </Container>
   );
 }
+
 const Container = styled.div`
   display: flex;
   width: 100%;
@@ -165,4 +182,43 @@ const VisitCard = styled.div`
   padding: 1rem;
   margin: 1rem 0;
   box-shadow: 0 0 5px #00000080;
+  width: 80%;
+  min-height: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1rem;
+`;
+
+const LeftArrow = styled(FaChevronCircleLeft)`
+  color: #ffffff;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  &:hover {
+    color: #a2a2a2;
+  }
+  &:active {
+    transform: scale(0.95);
+  }
+`;
+
+const RightArrow = styled(FaChevronCircleRight)`
+  color: #ffffff;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  &:hover {
+    color: #a2a2a2;
+  }
+  &:active {
+    transform: scale(0.95);
+  }
+`;
+
+const NavContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 2rem;
 `;

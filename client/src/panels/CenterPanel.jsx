@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import PatientData from "../Components/PatientData";
+import PatientData from "../Components/PatientData2";
 import DefaultButton from "../Components/Button";
 
 export default function CenterPanel({ height, background }) {
