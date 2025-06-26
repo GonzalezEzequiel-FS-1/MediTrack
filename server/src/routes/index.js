@@ -1,24 +1,18 @@
 const express = require("express");
 const router = express.Router();
-const logger = require("../../logs/logger");
-
+//const { createVisit } = require("../controllers/appointments");
 const {
   createVisit,
   getVisit,
-  newPatient,
-  editPatient,
   editVisit,
   deleteVisit,
+} = require("../controllers/visitRoutes");
+
+const {
+  newPatient,
+  editPatient,
   deletePatient,
-} = require("../controllers/appointments");
-
-router.get("/test-log", (req, res) => {
-  logger.info("Test route hit");
-  logger.warn("Test warning");
-  logger.error("Test error");
-  res.status(200).json({ success: true, message: "Logs tested" });
-});
-
+} = require("../controllers/patientRoutes");
 router
   .route("/appointment")
   .post(createVisit)

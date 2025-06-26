@@ -1,13 +1,11 @@
-const Patient = require("../models/Patient");
 const Visit = require("../models/Visit");
+const Patient = require("../models/Patient");
 const {
   patientExists,
   createPatient,
   addVisit,
 } = require("../controllers/misc/helpers");
 
-// Visit Creation
-//Passed
 const createVisit = async (req, res) => {
   // Get the data from the body
   const { ...apptData } = req.body;
@@ -24,9 +22,9 @@ const createVisit = async (req, res) => {
   // Check if the patiend is on the DB, if so skip
   const patient = await Patient.findOne({ TMID });
   if (!patient) {
-    console.log("Patient doesnt exist creating...");
+    //console.log("Patient doesnt exist creating...");
     const createdPatient = await createPatient(queriedPatient);
-    console.log(createdPatient);
+    //console.log(createdPatient);
   }
   const visit = apptData.visit;
   // After make sure that the patient is on the DB, we add the
@@ -46,10 +44,10 @@ const createVisit = async (req, res) => {
   }
 };
 
-//Passed
 const getVisit = async (req, res) => {
   const { status, service, ...patientQuery } = req.query;
 
+  //console.log(patientQuery);
   try {
     let visits;
 
@@ -97,78 +95,11 @@ const getVisit = async (req, res) => {
   }
 };
 
-//Passed
-const newPatient = async (req, res) => {
-  const { ...patientData } = req.body;
-  if (!patientData) {
-    res.status(400).json({
-      success: false,
-      message: "No patient Data provided",
-    });
-  }
-  try {
-    const newPatient = await Patient.create(patientData);
-    return res.status(200).json({
-      success: true,
-      newPatient,
-    });
-  } catch (error) {
-    if (error.code === 11000) {
-      return res.status(409).json({
-        success: false,
-        message: "TM already on database",
-      });
-    }
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
-
-//Passed
-const editPatient = async (req, res) => {
-  const patientToEdit = req.query;
-  const patientData = req.body;
-
-  if (!patientData || Object.keys(patientData).length === 0) {
-    return res.status(400).json({
-      success: false,
-      message: "No patient data provided",
-    });
-  }
-
-  try {
-    const editedPatient = await Patient.findOneAndUpdate(
-      patientToEdit,
-      { $set: patientData },
-      { new: true, runValidators: true }
-    );
-
-    if (!editedPatient) {
-      return res.status(404).json({
-        success: false,
-        message: "Patient not found",
-      });
-    }
-
-    return res.status(200).json({
-      success: true,
-      editedPatient,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
-
-//Passed
 const editVisit = async (req, res) => {
-  const visitToEdit = req.query._id;
+  const visitToEdit = req.query.id;
+
   const visitData = req.body;
-  console.log(visitToEdit);
+
   if (!visitToEdit || Object.keys(visitToEdit).length === 0) {
     return res.status(400).json({
       success: false,
@@ -182,6 +113,7 @@ const editVisit = async (req, res) => {
       { $set: visitData },
       { new: true, runValidators: true }
     );
+    //console.log(editedVisit);
 
     if (!editedVisit) {
       return res.status(404).json({
@@ -202,7 +134,6 @@ const editVisit = async (req, res) => {
   }
 };
 
-//Passed
 const deleteVisit = async (req, res) => {
   const visitToDelete = req.query._id;
 
@@ -235,48 +166,9 @@ const deleteVisit = async (req, res) => {
   }
 };
 
-//Passed
-const deletePatient = async (req, res) => {
-  const patientToDelete = req.query.TMID;
-  console.log(patientToDelete);
-
-  if (!patientToDelete) {
-    return res.status(400).json({
-      success: false,
-      message: "No visit ID provided",
-    });
-  }
-
-  try {
-    const deletedPatient = await Patient.findOneAndDelete({
-      TMID: patientToDelete,
-    });
-
-    if (!deletedPatient) {
-      return res.status(404).json({
-        success: false,
-        message: "Visit not found or could not be deleted",
-      });
-    }
-
-    return res.status(200).json({
-      success: true,
-      deletedPatient,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
-
 module.exports = {
   createVisit,
   getVisit,
-  newPatient,
-  editPatient,
   editVisit,
   deleteVisit,
-  deletePatient,
 };
