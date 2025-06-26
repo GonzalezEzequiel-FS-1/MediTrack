@@ -32,7 +32,7 @@ const Container = styled.div`
 `;
 
 const StyledIcon = styled.div`
-  font-size: 3rem;
+  font-size: 1.5rem;
   color: #ababab;
   cursor: pointer;
   filter: drop-shadow(2px 2px 5px #000000);
@@ -41,7 +41,7 @@ const StyledIcon = styled.div`
     color: #737373;
   }
   &:active {
-    transform: scale(0.95);
+    color: #dedede;
   }
   display: flex;
   align-items: center;

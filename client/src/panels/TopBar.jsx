@@ -1,8 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+import TextField from "../Components/TextField";
 
 export default function TopBar({ background }) {
-  return <MainContainer background={background}></MainContainer>;
+  return (
+  <MainContainer background={background}>
+    <TextField />
+  </MainContainer>
+  );
 }
 
 const MainContainer = styled.div`
