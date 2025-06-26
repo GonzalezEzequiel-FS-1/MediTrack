@@ -1,4 +1,21 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+
+const appointmentSchema = new mongoose.Schema(
+  {
+    dateTime: {
+      type: Date,
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: ["Scheduled", "Completed", "Cancelled", "Rescheduled"],
+      default: "Scheduled",
+    },
+    location: String,
+    notes: String,
+  },
+  { _id: false }
+);
 const visitSchema = new mongoose.Schema(
   {
     patient: {
@@ -6,19 +23,14 @@ const visitSchema = new mongoose.Schema(
       ref: "Patient",
       required: true,
     },
-    dateTime: {
-      type: Date,
-      required: true,
-    },
-    location: String,
-
     typeOfPhysical: {
       type: String,
-      enum: ["Fit For Duty", "Post Hire Questionnaire", "DOT", "Custom"],
       required: true,
+      enum: ["Fit For Duty", "Post Hire Questionnaire", "DOT", "Custom"],
     },
     service: {
       type: String,
+      required: true,
       enum: [
         "General Fit For Duty",
         "Horticulture Medical",
@@ -29,10 +41,8 @@ const visitSchema = new mongoose.Schema(
         "Hazmat Medical",
         "Custom",
       ],
-      required: true,
     },
-
-    testsPerformed: {
+    testToPerform: {
       type: [String],
       enum: [
         "Ear Irrigation",
@@ -54,24 +64,20 @@ const visitSchema = new mongoose.Schema(
       ],
       default: [],
     },
-
     status: {
       type: String,
-      enum: ["Scheduled", "Completed", "Cancelled", "Rescheduled", "No Show"],
-      default: "Scheduled",
+      enum: ["Scheduled", "Pending", "Rescheduled", "No Show"],
     },
-
-    notes: String,
+    appointments: [appointmentSchema],
+    version: { type: Number, default: 0 },
   },
   {
     timestamps: true,
   }
 );
 
-// Indexes for performance
 visitSchema.index({ patient: 1 });
-visitSchema.index({ dateTime: 1 });
-visitSchema.index({ service: 1 });
 visitSchema.index({ status: 1 });
+visitSchema.index({ "appointments.dateTime": 1 });
 
 module.exports = mongoose.model("Visit", visitSchema);

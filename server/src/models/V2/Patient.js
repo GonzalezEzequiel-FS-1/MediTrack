@@ -22,10 +22,10 @@ const patientSchema = new mongoose.Schema(
     },
     DOB: {
       type: Date,
+      required: true,
     },
     jobTitle: {
       type: String,
-      lowercase: true,
       trim: true,
     },
   },
@@ -40,6 +40,7 @@ patientSchema.virtual("fullName").get(function () {
   const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
   return `${capitalize(this.firstName)} ${capitalize(this.lastName)}`;
 });
+
 
 patientSchema.virtual("visits", {
   ref: "Visit",

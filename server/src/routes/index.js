@@ -1,19 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const logger = require("../../logs/logger");
+
 const {
-  editPatient,
-  scheduleVisit,
+  createVisit,
   getVisit,
-  getVisits,
+  newPatient,
+  editPatient,
   editVisit,
-  deleteAllVisits,
   deleteVisit,
   deletePatient,
-  deleteAllPatients,
-  getPatient,
-} = require("../controllers/AppointmentController");
-const { bulkUpload } = require("../controllers/bulkUpload");
+} = require("../controllers/appointments");
 
 router.get("/test-log", (req, res) => {
   logger.info("Test route hit");
@@ -23,17 +20,15 @@ router.get("/test-log", (req, res) => {
 });
 
 router
-  .route("/visit")
+  .route("/appointment")
+  .post(createVisit)
   .get(getVisit)
-  .post(scheduleVisit)
-  .delete(deleteVisit)
-  .patch(editVisit);
-router.route("/visit/all").get(getVisits).delete(deleteAllVisits);
+  .patch(editVisit)
+  .delete(deleteVisit);
 router
   .route("/patient")
+  .post(newPatient)
   .patch(editPatient)
-  .delete(deletePatient)
-  .get(getPatient);
-router.route("/patient/all").delete(deleteAllPatients).post(bulkUpload);
+  .delete(deletePatient);
 
 module.exports = router;

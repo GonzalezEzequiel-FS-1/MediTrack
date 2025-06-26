@@ -115,7 +115,7 @@ const testSelection = async (category) => {
       ];
       break;
   }
-  console.log(testToPerform);
+  // console.log(testToPerform);
   return testToPerform;
 };
 module.exports = {
